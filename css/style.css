@@ -1,0 +1,235 @@
+/* 0. 기본 설정 (Reset) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+  --primary-color: #d97706; /* CozyCA 오렌지 */
+  --hover-color: #b45309;
+  --border-color: #e5e7eb;
+  --bg-gray: #f9fafb;
+  --header-height: 70px;
+  --filter-height: 60px;
+}
+
+body {
+  height: 100vh; /* 화면 전체 높이 사용 */
+  display: flex;
+  flex-direction: column; /* 세로 배치 (헤더-필터-메인) */
+  overflow: hidden; /* 전체 스크롤 방지 (리스트만 스크롤 되게) */
+}
+
+/* 1. 헤더 스타일 */
+.header {
+  height: var(--header-height);
+  background-color: white;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo i {
+  color: var(--primary-color);
+}
+
+.search-bar {
+  flex: 1; /* 남은 공간 차지 */
+  max-width: 500px; /* 너무 늘어나지 않게 */
+  margin: 0 20px;
+  position: relative;
+  display: flex;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px 40px 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  outline: none;
+  background-color: #f3f4f6;
+  transition: 0.2s;
+}
+
+.search-bar input:focus {
+  background-color: white;
+  border-color: var(--primary-color);
+}
+
+.search-bar button {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-login {
+  padding: 8px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-login:hover {
+  background-color: #555;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #555;
+}
+
+.btn-icon:hover {
+  color: var(--primary-color);
+}
+
+/* 2. 필터바 스타일 */
+.filter-bar {
+  height: var(--filter-height);
+  background-color: white;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  overflow-x: auto; /* 화면 좁으면 가로 스크롤 */
+  white-space: nowrap;
+}
+
+.filter-bar select {
+  padding: 8px 15px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+.filter-bar select:hover {
+  border-color: var(--primary-color);
+}
+
+/* 3. 메인 콘텐츠 (스플릿 뷰) */
+.main-container {
+  display: flex; /* 가로 배치 */
+  flex: 1; /* 남은 높이 모두 차지 */
+  height: calc(100vh - var(--header-height) - var(--filter-height));
+}
+
+/* 왼쪽: 지도 */
+.map-section {
+  width: 60%; /* 너비 60% */
+  height: 100%;
+  background-color: #e5e5e5;
+}
+
+/* 오른쪽: 리스트 */
+.list-section {
+  width: 40%; /* 너비 40% */
+  height: 100%;
+  overflow-y: auto; /* 세로 스크롤 허용 */
+  padding: 20px;
+  background-color: var(--bg-gray);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 카드 스타일 */
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex; /* 가로 배치 (이미지 왼쪽, 텍스트 오른쪽) */
+  height: 120px;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-img {
+  width: 140px;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.card-info {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-info h3 {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.card-info .price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.card-info .desc {
+  font-size: 13px;
+  color: #777;
+}
+
+/* 모바일 반응형 (화면 작아지면 리스트만 보이게 하거나 세로 배치) */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column-reverse; /* 리스트가 위로 오게 하거나 선택 */
+  }
+  .map-section {
+    width: 100%;
+    height: 40%;
+    display: none; /* 모바일에선 일단 지도 숨김 처리 예시 */
+  }
+  .list-section {
+    width: 100%;
+    height: 100%;
+  }
+}

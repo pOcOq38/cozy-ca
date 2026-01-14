@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CozyCA - 캐나다 집 구하기</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">
+        <i class="fa-solid fa-house"></i>
+        <span>CozyCA</span>
+      </div>
+
+      <div class="search-bar">
+        <input type="text" placeholder="지역, 지하철역, 학교 검색..." />
+        <button><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+
+      <div class="user-menu">
+        <button class="btn-login">로그인</button>
+        <button class="btn-icon"><i class="fa-regular fa-bookmark"></i></button>
+      </div>
+    </header>
+
+    <nav class="filter-bar">
+      <select>
+        <option>지역 (Region)</option>
+        <option>Vancouver</option>
+        <option>Burnaby</option>
+      </select>
+      <select>
+        <option>가격 (Price)</option>
+        <option>~$1500</option>
+        <option>$1500+</option>
+      </select>
+      <select>
+        <option>하우스 타입</option>
+        <option>Condo</option>
+        <option>House</option>
+      </select>
+      <select>
+        <option>방 개수</option>
+        <option>Studio</option>
+        <option>1 Bed</option>
+      </select>
+      <select>
+        <option>화장실 개수</option>
+        <option>1 Bath</option>
+        <option>2 Bath</option>
+      </select>
+    </nav>
+
+    <main class="main-container">
+      <section id="map" class="map-section"></section>
+
+      <section class="list-section">
+        <div class="card">
+          <div
+            class="card-img"
+            style="background-image: url('https://via.placeholder.com/300')"
+          ></div>
+          <div class="card-info">
+            <h3>Downtown Luxury Condo</h3>
+            <p class="price">$2,800 / Month</p>
+            <p class="desc">1 Bed • 1 Bath • Furnished</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div
+            class="card-img"
+            style="background-image: url('https://via.placeholder.com/300')"
+          ></div>
+          <div class="card-info">
+            <h3>Burnaby Metrotown Room</h3>
+            <p class="price">$950 / Month</p>
+            <p class="desc">Private Room • Shared Bath</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div
+            class="card-img"
+            style="background-image: url('https://via.placeholder.com/300')"
+          ></div>
+          <div class="card-info">
+            <h3>Coquitlam Townhouse</h3>
+            <p class="price">$3,200 / Month</p>
+            <p class="desc">3 Bed • 2 Bath</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // 지도 초기화 스크립트 (밴쿠버 좌표)
+      var map = L.map("map").setView([49.2827, -123.1207], 13);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "© OpenStreetMap",
+      }).addTo(map);
+    </script>
+  </body>
+</html>
