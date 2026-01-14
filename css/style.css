@@ -1,192 +1,185 @@
-/* 0. 기본 설정 (Reset) */
+/* =========================================
+   1. 기본 설정 (Base)
+   ========================================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
 }
 
 :root {
-  --primary-color: #d97706; /* CozyCA 오렌지 */
+  --primary: #d97706;
   --hover-color: #b45309;
-  --border-color: #e5e7eb;
-  --bg-gray: #f9fafb;
-  --header-height: 70px;
-  --filter-height: 60px;
+  --gray-bg: #f3f4f6;
+  --border: #e5e7eb;
 }
 
+/* ★ 중요: 기본적으로 모든 페이지는 스크롤 가능하게 설정 */
 body {
-  height: 100vh; /* 화면 전체 높이 사용 */
+  min-height: 100vh;
   display: flex;
-  flex-direction: column; /* 세로 배치 (헤더-필터-메인) */
-  overflow: hidden; /* 전체 스크롤 방지 (리스트만 스크롤 되게) */
+  flex-direction: column;
+  overflow-x: hidden; /* 가로 스크롤만 방지 */
+  overflow-y: auto; /* 세로 스크롤 허용 */
 }
 
-/* 1. 헤더 스타일 */
+/* ★ 지도 앱 모드 (index.html 전용): 화면 고정 */
+body.map-app-mode {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 헤더 스타일 */
 .header {
-  height: var(--header-height);
-  background-color: white;
-  border-bottom: 1px solid var(--border-color);
+  height: 70px;
+  background: white;
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  z-index: 100;
+  flex-shrink: 0;
 }
-
 .logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
+  gap: 8px;
   text-decoration: none;
-  cursor: pointer;
 }
-
 .logo i {
-  color: var(--primary-color);
+  color: var(--primary);
+}
+.logo span {
+  display: block;
 }
 
 .search-bar {
-  flex: 1; /* 남은 공간 차지 */
-  max-width: 500px; /* 너무 늘어나지 않게 */
-  margin: 0 20px;
+  flex: 1;
+  max-width: 400px;
+  margin: 0 15px;
   position: relative;
-  display: flex;
 }
-
 .search-bar input {
   width: 100%;
-  padding: 10px 40px 10px 20px;
+  padding: 10px 40px 10px 15px;
+  border-radius: 50px;
   border: 1px solid #ddd;
-  border-radius: 25px;
-  outline: none;
-  background-color: #f3f4f6;
-  transition: 0.2s;
+  background: #f9f9f9;
+  font-size: 15px;
 }
-
-.search-bar input:focus {
-  background-color: white;
-  border-color: var(--primary-color);
-}
-
 .search-bar button {
   position: absolute;
   right: 15px;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
   border: none;
-  color: #888;
-  cursor: pointer;
+  background: none;
+  color: #777;
 }
-
-.user-menu {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
 .btn-login {
-  padding: 8px 20px;
-  background-color: #333;
+  padding: 8px 16px;
+  background: #222;
   color: white;
   border: none;
   border-radius: 20px;
-  cursor: pointer;
   font-weight: bold;
-}
-
-.btn-login:hover {
-  background-color: #555;
-}
-
-.btn-icon {
-  background: none;
-  border: none;
-  font-size: 20px;
   cursor: pointer;
-  color: #555;
 }
 
-.btn-icon:hover {
-  color: var(--primary-color);
-}
-
-/* 2. 필터바 스타일 */
+/* 필터바 스타일 */
 .filter-bar {
-  height: var(--filter-height);
-  background-color: white;
-  border-bottom: 1px solid var(--border-color);
+  height: 70px;
+  background: white;
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   padding: 0 20px;
-  overflow-x: auto; /* 화면 좁으면 가로 스크롤 */
+  overflow-x: auto;
   white-space: nowrap;
+  flex-shrink: 0;
+}
+.filter-bar::-webkit-scrollbar {
+  display: none;
 }
 
-.filter-bar select {
-  padding: 8px 15px;
+.filter-item {
   border: 1px solid #ddd;
-  border-radius: 20px;
-  background-color: white;
-  cursor: pointer;
-  font-size: 14px;
-  color: #333;
-}
-
-.filter-bar select:hover {
-  border-color: var(--primary-color);
-}
-
-/* 3. 메인 콘텐츠 (스플릿 뷰) */
-.main-container {
-  display: flex; /* 가로 배치 */
-  flex: 1; /* 남은 높이 모두 차지 */
-  height: calc(100vh - var(--header-height) - var(--filter-height));
-}
-
-/* 왼쪽: 지도 */
-.map-section {
-  width: 60%; /* 너비 60% */
-  height: 100%;
-  background-color: #e5e5e5;
-}
-
-/* 오른쪽: 리스트 */
-.list-section {
-  width: 40%; /* 너비 40% */
-  height: 100%;
-  overflow-y: auto; /* 세로 스크롤 허용 */
-  padding: 20px;
-  background-color: var(--bg-gray);
+  border-radius: 30px;
+  padding: 8px 16px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  font-size: 14px;
+  color: #444;
+}
+
+.filter-item select {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.price-range input {
+  width: 60px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+  outline: none;
+  font-size: 14px;
+}
+
+/* 메인 컨테이너 (지도/리스트) */
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden; /* 지도 모드에선 내부 스크롤 */
+}
+
+.map-section {
+  width: 55%;
+  height: 100%;
+  background: #ddd;
+}
+
+.list-section {
+  width: 45%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  background: var(--gray-bg);
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 20px;
+  align-content: start;
 }
 
 /* 카드 스타일 */
 .card {
   background: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
+  border: 1px solid var(--border);
+  display: flex;
+  height: 160px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex; /* 가로 배치 (이미지 왼쪽, 텍스트 오른쪽) */
-  height: 120px;
+  transition: transform 0.2s;
 }
-
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .card-img {
-  width: 140px;
+  width: 180px;
   height: 100%;
   background-size: cover;
   background-position: center;
@@ -194,42 +187,396 @@ body {
 }
 
 .card-info {
-  padding: 15px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
+}
+
+.card-info .price {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 4px;
+}
+.card-info .price .period {
+  font-size: 13px;
+  color: #777;
+  font-weight: normal;
 }
 
 .card-info h3 {
   font-size: 16px;
-  margin-bottom: 5px;
+  font-weight: 600;
   color: #333;
+  margin-bottom: 8px;
+  line-height: 1.3;
 }
 
-.card-info .price {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
+.card-info .specs {
+  font-size: 12px;
+  color: #888;
 }
 
-.card-info .desc {
+.card-info .location {
   font-size: 13px;
-  color: #777;
+  color: #666;
+  margin-bottom: 4px;
+  margin-top: auto;
 }
 
-/* 모바일 반응형 (화면 작아지면 리스트만 보이게 하거나 세로 배치) */
-@media (max-width: 768px) {
-  .main-container {
-    flex-direction: column-reverse; /* 리스트가 위로 오게 하거나 선택 */
+/* 모바일 반응형 */
+@media screen and (max-width: 768px) {
+  /* 모바일은 항상 스크롤 가능 */
+  body,
+  body.map-app-mode {
+    height: auto;
+    overflow-y: auto;
   }
+
+  .logo span {
+    display: none;
+  }
+
+  .main-container {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+
   .map-section {
     width: 100%;
-    height: 40%;
-    display: none; /* 모바일에선 일단 지도 숨김 처리 예시 */
+    height: 350px;
   }
+
   .list-section {
     width: 100%;
-    height: 100%;
+    height: auto;
+    overflow: visible;
+    padding: 15px;
+  }
+
+  .card {
+    height: 130px;
+  }
+  .card-img {
+    width: 130px;
+  }
+}
+
+/* 인증 페이지 (로그인/회원가입) */
+.bg-gray {
+  background-color: #f9fafb;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.auth-logo {
+  font-size: 28px;
+  font-weight: 800;
+  color: #111;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.auth-logo i {
+  color: var(--primary);
+}
+
+.auth-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.auth-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+.auth-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+.input-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+  margin-left: 4px;
+}
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background-color: #fff;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  color: #111;
+}
+.input-group input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.1);
+  outline: none;
+}
+.input-group input::placeholder {
+  color: #9ca3af;
+}
+
+.btn-full {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s, transform 0.1s;
+  box-shadow: 0 4px 6px rgba(217, 119, 6, 0.2);
+}
+.btn-full:hover {
+  background-color: var(--hover-color);
+  transform: translateY(-1px);
+}
+
+.auth-footer {
+  margin-top: 24px;
+  font-size: 14px;
+  color: #6b7280;
+}
+.auth-footer a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* =========================================
+     10. Detail Page Styles (Left Image / Right Info)
+     ========================================= */
+.bg-white {
+  background-color: white;
+}
+
+/* 전체 래퍼: 좌우 분할 */
+.detail-wrapper {
+  height: auto !important; /* 높이 자동 확장 */
+  min-height: 100vh;
+  display: flex;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 40px;
+  gap: 50px; /* 좌우 간격 */
+  align-items: flex-start; /* 위쪽 정렬 */
+}
+
+/* --- [좌측] 이미지 (55%) --- */
+.detail-left {
+  flex: 1.2;
+  position: sticky; /* 스크롤 할 때 이미지 살짝 고정 효과 */
+  top: 100px;
+}
+.detail-left img {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* --- [우측] 정보 (45%) --- */
+.detail-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+
+/* 제목 및 가격 */
+.info-header {
+  margin-bottom: 20px;
+}
+
+.location-badge {
+  display: inline-block;
+  background: #f3f4f6;
+  color: #555;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.location-badge i {
+  color: var(--primary);
+  margin-right: 4px;
+}
+
+.detail-right h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.price-text #d-price {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary);
+}
+.price-text .period {
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+}
+
+/* 구분선 */
+.divider {
+  border: 0;
+  height: 1px;
+  background: #eee;
+  margin: 24px 0;
+}
+
+/* 스펙 박스 */
+.specs-row {
+  display: flex;
+  gap: 15px;
+}
+.spec-box {
+  flex: 1;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  font-weight: 600;
+  color: #333;
+}
+.spec-box i {
+  display: block;
+  font-size: 20px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+/* 설명글 */
+.description-section h3,
+.map-section h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.description-section p {
+  line-height: 1.6;
+  color: #555;
+  font-size: 15px;
+  white-space: pre-line;
+}
+
+/* 액션 버튼들 */
+.action-buttons {
+  margin-top: 10px;
+}
+
+.btn-primary-full {
+  width: 100%;
+  padding: 16px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: 0.2s;
+}
+.btn-primary-full:hover {
+  background: var(--hover-color);
+  transform: translateY(-2px);
+}
+
+.owner-btns {
+  display: flex;
+  gap: 10px;
+}
+.btn-outline,
+.btn-danger {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  background: white;
+}
+.btn-outline {
+  border: 1px solid #ccc;
+  color: #333;
+}
+.btn-danger {
+  border: 1px solid #ef4444;
+  color: #ef4444;
+}
+
+/* 지도 (우측 하단) */
+.map-section {
+  margin-top: 10px;
+}
+#detail-map {
+  width: 100%;
+  height: 250px;
+  border-radius: 12px;
+  z-index: 1;
+}
+
+/* 📱 모바일 반응형 (768px 이하) Detail */
+@media screen and (max-width: 768px) {
+  .detail-wrapper {
+    flex-direction: column;
+    padding: 20px;
+    gap: 30px;
+  }
+  .detail-left {
+    width: 100%;
+    position: static;
+  }
+  .detail-left img {
+    height: 300px;
+  }
+  .detail-right {
+    width: 100%;
   }
 }

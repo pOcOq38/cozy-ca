@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - CozyCA</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray">
+    <div class="auth-container">
+      <div class="auth-header">
+        <a href="index.html" class="auth-logo">
+          <i class="fa-solid fa-house"></i> CozyCA
+        </a>
+      </div>
+
+      <div class="auth-card">
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-subtitle">Join us to find your cozy home.</p>
+
+        <form id="signupForm">
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="name" placeholder="John Doe" required />
+          </div>
+          <div class="input-group">
+            <label>Email</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="hello@cozyca.com"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Create a password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn-full">Sign Up</button>
+        </form>
+
+        <div class="auth-footer">
+          Already have an account? <a href="login.html">Log in</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+  </body>
+</html>

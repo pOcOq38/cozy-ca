@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail - CozyCA</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  </head>
+  <body class="bg-white">
+    <header class="header">
+      <a href="index.html" class="logo">
+        <i class="fa-solid fa-house"></i> <span>CozyCA</span>
+      </a>
+      <div class="user-menu">
+        <button class="btn-login">Log in</button>
+      </div>
+    </header>
+
+    <main class="detail-wrapper">
+      <div class="detail-left">
+        <img id="d-image" src="" alt="Property Image" />
+      </div>
+
+      <div class="detail-right">
+        <div class="info-header">
+          <div class="location-badge" id="d-location">
+            <i class="fa-solid fa-map-pin"></i> Location
+          </div>
+          <h1 id="d-title">Loading Title...</h1>
+          <p class="price-text">
+            <span id="d-price">$0</span> <span class="period">/ month</span>
+          </p>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="specs-row">
+          <div class="spec-box">
+            <i class="fa-solid fa-bed"></i>
+            <span id="d-beds">- Bed</span>
+          </div>
+          <div class="spec-box">
+            <i class="fa-solid fa-bath"></i>
+            <span id="d-baths">- Bath</span>
+          </div>
+          <div class="spec-box">
+            <i class="fa-solid fa-house-chimney"></i>
+            <span>Apartment</span>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="description-section">
+          <h3>About this home</h3>
+          <p id="d-desc">Loading description...</p>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn-primary-full">Contact Landlord</button>
+          <div class="owner-btns">
+            <button id="btn-edit" class="btn-outline">Edit</button>
+            <button id="btn-delete" class="btn-danger">Delete</button>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="map-section">
+          <h3>Location</h3>
+          <div id="detail-map"></div>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/db.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/detail.js"></script>
+  </body>
+</html>

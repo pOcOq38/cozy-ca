@@ -3,15 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CozyCA - 캐나다 집 구하기</title>
-
+    <title>CozyCA</title>
     <link rel="stylesheet" href="css/style.css" />
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -21,47 +18,58 @@
   <body>
     <header class="header">
       <div class="logo">
-        <i class="fa-solid fa-house"></i>
-        <span>CozyCA</span>
+        <i class="fa-solid fa-house"></i> <span>CozyCA</span>
       </div>
-
       <div class="search-bar">
-        <input type="text" placeholder="지역, 지하철역, 학교 검색..." />
+        <input type="text" placeholder="search" />
         <button><i class="fa-solid fa-magnifying-glass"></i></button>
       </div>
-
       <div class="user-menu">
-        <button class="btn-login">로그인</button>
-        <button class="btn-icon"><i class="fa-regular fa-bookmark"></i></button>
+        <button class="btn-login">login</button>
       </div>
     </header>
 
     <nav class="filter-bar">
-      <select>
-        <option>지역 (Region)</option>
-        <option>Vancouver</option>
-        <option>Burnaby</option>
-      </select>
-      <select>
-        <option>가격 (Price)</option>
-        <option>~$1500</option>
-        <option>$1500+</option>
-      </select>
-      <select>
-        <option>하우스 타입</option>
-        <option>Condo</option>
-        <option>House</option>
-      </select>
-      <select>
-        <option>방 개수</option>
-        <option>Studio</option>
-        <option>1 Bed</option>
-      </select>
-      <select>
-        <option>화장실 개수</option>
-        <option>1 Bath</option>
-        <option>2 Bath</option>
-      </select>
+      <div class="filter-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <select>
+          <option value="">location</option>
+          <option value="Vancouver">Vancouver</option>
+          <option value="Burnaby">Burnaby</option>
+          <option value="Richmond">Richmond</option>
+          <option value="Coquitlam">Coquitlam</option>
+          <option value="Surrey">Surrey</option>
+        </select>
+      </div>
+
+      <div class="filter-item price-range">
+        <span>$</span>
+        <input type="number" placeholder="Min" class="input-price" />
+        <span>~</span>
+        <input type="number" placeholder="Max" class="input-price" />
+      </div>
+
+      <div class="filter-item">
+        <i class="fa-solid fa-bed"></i>
+        <select>
+          <option value="">Beds</option>
+          <option value="Studio">Studio</option>
+          <option value="1">1 Bed</option>
+          <option value="2">2 Beds</option>
+          <option value="3">3 Beds</option>
+          <option value="4+">4+ Beds</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <i class="fa-solid fa-bath"></i>
+        <select>
+          <option value="">Bath</option>
+          <option value="1">1 Bath</option>
+          <option value="2">2 Baths</option>
+          <option value="3+">3+ Baths</option>
+        </select>
+      </div>
     </nav>
 
     <main class="main-container">
@@ -71,47 +79,79 @@
         <div class="card">
           <div
             class="card-img"
-            style="background-image: url('https://via.placeholder.com/300')"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+            "
           ></div>
           <div class="card-info">
-            <h3>Downtown Luxury Condo</h3>
-            <p class="price">$2,800 / Month</p>
-            <p class="desc">1 Bed • 1 Bath • Furnished</p>
+            <p class="price">$2,800 <span class="period">/ Month</span></p>
+            <h3>Downtown Luxury Condo View</h3>
+
+            <p class="specs">1 Bed • 1 Bath • Furnished</p>
+            <p class="location">
+              <i class="fa-solid fa-map-pin"></i> Vancouver Downtown
+            </p>
           </div>
         </div>
 
         <div class="card">
           <div
             class="card-img"
-            style="background-image: url('https://via.placeholder.com/300')"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+            "
           ></div>
           <div class="card-info">
-            <h3>Burnaby Metrotown Room</h3>
-            <p class="price">$950 / Month</p>
-            <p class="desc">Private Room • Shared Bath</p>
+            <p class="price">$950 <span class="period">/ Month</span></p>
+            <h3>Metrotown Station Room</h3>
+            <p class="specs">Private Room • Shared Bath</p>
+            <p class="location"><i class="fa-solid fa-map-pin"></i> Burnaby</p>
           </div>
         </div>
 
         <div class="card">
           <div
             class="card-img"
-            style="background-image: url('https://via.placeholder.com/300')"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+            "
           ></div>
           <div class="card-info">
+            <p class="price">$3,500 <span class="period">/ Month</span></p>
             <h3>Coquitlam Townhouse</h3>
-            <p class="price">$3,200 / Month</p>
-            <p class="desc">3 Bed • 2 Bath</p>
+
+            <p class="specs">3 Bed • 2 Bath • Parking</p>
+            <p class="location">
+              <i class="fa-solid fa-map-pin"></i> Coquitlam Centre
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <div
+            class="card-img"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1484154218962-a1c002085d2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+            "
+          ></div>
+          <div class="card-info">
+            <p class="price">$1,200 <span class="period">/ Month</span></p>
+            <h3>UBC Campus Room</h3>
+
+            <p class="specs">Shared Room • Study ready</p>
+            <p class="location">
+              <i class="fa-solid fa-map-pin"></i> UBC, Vancouver
+            </p>
           </div>
         </div>
       </section>
     </main>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
 
     <script>
-      // 지도 초기화 스크립트 (밴쿠버 좌표)
       var map = L.map("map").setView([49.2827, -123.1207], 13);
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
-        attribution: "© OpenStreetMap",
       }).addTo(map);
     </script>
   </body>
