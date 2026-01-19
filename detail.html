@@ -20,6 +20,10 @@
       <a href="index.html" class="logo">
         <i class="fa-solid fa-house"></i> <span>CozyCA</span>
       </a>
+      <div class="search-bar">
+        <input type="text" placeholder="Search area, school, station..." />
+        <button><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
       <div class="user-menu">
         <button class="btn-login">Log in</button>
       </div>
@@ -35,7 +39,12 @@
           <div class="location-badge" id="d-location">
             <i class="fa-solid fa-map-pin"></i> Location
           </div>
-          <h1 id="d-title">Loading Title...</h1>
+          <div class="title-row">
+            <h1 id="d-title">Loading Title...</h1>
+            <button id="btn-bookmark-detail" class="btn-bookmark-detail">
+              <i class="fa-regular fa-bookmark"></i>
+            </button>
+          </div>
           <p class="price-text">
             <span id="d-price">$0</span> <span class="period">/ month</span>
           </p>
@@ -83,7 +92,7 @@
     </main>
 
     <script src="js/db.js"></script>
-    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
     <script src="js/detail.js"></script>
   </body>
 </html>

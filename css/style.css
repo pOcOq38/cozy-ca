@@ -1,6 +1,3 @@
-/* =========================================
-   1. 기본 설정 (Base)
-   ========================================= */
 * {
   margin: 0;
   padding: 0;
@@ -16,32 +13,29 @@
   --border: #e5e7eb;
 }
 
-/* ★ 중요: 기본적으로 모든 페이지는 스크롤 가능하게 설정 */
 body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden; /* 가로 스크롤만 방지 */
-  overflow-y: auto; /* 세로 스크롤 허용 */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-/* ★ 지도 앱 모드 (index.html 전용): 화면 고정 */
 body.map-app-mode {
   height: 100vh;
   overflow: hidden;
 }
 
-/* 헤더 스타일 */
 .header {
   height: 70px;
   background: white;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 0 20px;
   flex-shrink: 0;
 }
+
 .logo {
   font-size: 20px;
   font-weight: 700;
@@ -50,20 +44,24 @@ body.map-app-mode {
   align-items: center;
   gap: 8px;
   text-decoration: none;
+  margin-right: 20px;
+  flex-shrink: 0;
 }
+
 .logo i {
   color: var(--primary);
 }
+
 .logo span {
   display: block;
 }
 
 .search-bar {
-  flex: 1;
-  max-width: 400px;
-  margin: 0 15px;
+  width: 320px;
+  margin-right: auto;
   position: relative;
 }
+
 .search-bar input {
   width: 100%;
   padding: 10px 40px 10px 15px;
@@ -72,6 +70,7 @@ body.map-app-mode {
   background: #f9f9f9;
   font-size: 15px;
 }
+
 .search-bar button {
   position: absolute;
   right: 15px;
@@ -81,6 +80,14 @@ body.map-app-mode {
   background: none;
   color: #777;
 }
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
 .btn-login {
   padding: 8px 16px;
   background: #222;
@@ -91,7 +98,58 @@ body.map-app-mode {
   cursor: pointer;
 }
 
-/* 필터바 스타일 */
+.btn-icon-nav {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #666;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.btn-icon-nav:hover {
+  color: var(--primary);
+  transform: scale(1.05);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  color: #333;
+  cursor: default;
+}
+
+.user-profile i {
+  font-size: 24px;
+  color: #ddd;
+}
+
+.btn-logout {
+  background: #f3f4f6;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #555;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover {
+  background: #e5e7eb;
+  color: #111;
+}
+
 .filter-bar {
   height: 70px;
   background: white;
@@ -104,6 +162,7 @@ body.map-app-mode {
   white-space: nowrap;
   flex-shrink: 0;
 }
+
 .filter-bar::-webkit-scrollbar {
   display: none;
 }
@@ -137,11 +196,10 @@ body.map-app-mode {
   font-size: 14px;
 }
 
-/* 메인 컨테이너 (지도/리스트) */
 .main-container {
   display: flex;
   flex: 1;
-  overflow: hidden; /* 지도 모드에선 내부 스크롤 */
+  overflow: hidden;
 }
 
 .map-section {
@@ -162,7 +220,6 @@ body.map-app-mode {
   align-content: start;
 }
 
-/* 카드 스타일 */
 .card {
   background: white;
   border-radius: 12px;
@@ -172,10 +229,40 @@ body.map-app-mode {
   height: 160px;
   cursor: pointer;
   transition: transform 0.2s;
+  position: relative;
 }
+
 .card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-bookmark-card {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #ccc;
+  z-index: 10;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.btn-bookmark-card:hover {
+  transform: scale(1.1);
+  background: white;
+}
+
+.btn-bookmark-card.active {
+  color: var(--primary);
 }
 
 .card-img {
@@ -200,6 +287,7 @@ body.map-app-mode {
   color: #111;
   margin-bottom: 4px;
 }
+
 .card-info .price .period {
   font-size: 13px;
   color: #777;
@@ -226,9 +314,7 @@ body.map-app-mode {
   margin-top: auto;
 }
 
-/* 모바일 반응형 */
 @media screen and (max-width: 768px) {
-  /* 모바일은 항상 스크롤 가능 */
   body,
   body.map-app-mode {
     height: auto;
@@ -237,6 +323,12 @@ body.map-app-mode {
 
   .logo span {
     display: none;
+  }
+
+  .search-bar {
+    width: auto;
+    flex: 1;
+    margin-right: 10px;
   }
 
   .main-container {
@@ -260,12 +352,12 @@ body.map-app-mode {
   .card {
     height: 130px;
   }
+
   .card-img {
     width: 130px;
   }
 }
 
-/* 인증 페이지 (로그인/회원가입) */
 .bg-gray {
   background-color: #f9fafb;
   height: 100vh;
@@ -285,6 +377,7 @@ body.map-app-mode {
   text-align: center;
   margin-bottom: 30px;
 }
+
 .auth-logo {
   font-size: 28px;
   font-weight: 800;
@@ -294,6 +387,7 @@ body.map-app-mode {
   align-items: center;
   gap: 8px;
 }
+
 .auth-logo i {
   color: var(--primary);
 }
@@ -312,6 +406,7 @@ body.map-app-mode {
   color: #1f2937;
   margin-bottom: 8px;
 }
+
 .auth-subtitle {
   font-size: 14px;
   color: #6b7280;
@@ -322,6 +417,7 @@ body.map-app-mode {
   text-align: left;
   margin-bottom: 20px;
 }
+
 .input-group label {
   display: block;
   font-size: 13px;
@@ -330,6 +426,7 @@ body.map-app-mode {
   margin-bottom: 6px;
   margin-left: 4px;
 }
+
 .input-group input {
   width: 100%;
   padding: 14px 16px;
@@ -340,11 +437,13 @@ body.map-app-mode {
   transition: all 0.2s ease;
   color: #111;
 }
+
 .input-group input:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.1);
   outline: none;
 }
+
 .input-group input::placeholder {
   color: #9ca3af;
 }
@@ -363,6 +462,7 @@ body.map-app-mode {
   transition: background-color 0.2s, transform 0.1s;
   box-shadow: 0 4px 6px rgba(217, 119, 6, 0.2);
 }
+
 .btn-full:hover {
   background-color: var(--hover-color);
   transform: translateY(-1px);
@@ -373,40 +473,38 @@ body.map-app-mode {
   font-size: 14px;
   color: #6b7280;
 }
+
 .auth-footer a {
   color: var(--primary);
   font-weight: 600;
   text-decoration: none;
 }
+
 .auth-footer a:hover {
   text-decoration: underline;
 }
 
-/* =========================================
-     10. Detail Page Styles (Left Image / Right Info)
-     ========================================= */
 .bg-white {
   background-color: white;
 }
 
-/* 전체 래퍼: 좌우 분할 */
 .detail-wrapper {
-  height: auto !important; /* 높이 자동 확장 */
+  height: auto !important;
   min-height: 100vh;
   display: flex;
   max-width: 1300px;
   margin: 0 auto;
   padding: 40px;
-  gap: 50px; /* 좌우 간격 */
-  align-items: flex-start; /* 위쪽 정렬 */
+  gap: 50px;
+  align-items: flex-start;
 }
 
-/* --- [좌측] 이미지 (55%) --- */
 .detail-left {
   flex: 1.2;
-  position: sticky; /* 스크롤 할 때 이미지 살짝 고정 효과 */
+  position: sticky;
   top: 100px;
 }
+
 .detail-left img {
   width: 100%;
   height: 600px;
@@ -415,7 +513,6 @@ body.map-app-mode {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-/* --- [우측] 정보 (45%) --- */
 .detail-right {
   flex: 1;
   display: flex;
@@ -423,9 +520,41 @@ body.map-app-mode {
   padding-top: 10px;
 }
 
-/* 제목 및 가격 */
 .info-header {
   margin-bottom: 20px;
+}
+
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.btn-bookmark-detail {
+  background: white;
+  border: 1px solid #ddd;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #ccc;
+  cursor: pointer;
+  transition: 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-bookmark-detail:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-bookmark-detail.active {
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
 .location-badge {
@@ -438,6 +567,7 @@ body.map-app-mode {
   font-weight: 600;
   margin-bottom: 12px;
 }
+
 .location-badge i {
   color: var(--primary);
   margin-right: 4px;
@@ -456,13 +586,13 @@ body.map-app-mode {
   font-weight: 800;
   color: var(--primary);
 }
+
 .price-text .period {
   font-size: 16px;
   color: #666;
   font-weight: 500;
 }
 
-/* 구분선 */
 .divider {
   border: 0;
   height: 1px;
@@ -470,11 +600,11 @@ body.map-app-mode {
   margin: 24px 0;
 }
 
-/* 스펙 박스 */
 .specs-row {
   display: flex;
   gap: 15px;
 }
+
 .spec-box {
   flex: 1;
   background: white;
@@ -485,6 +615,7 @@ body.map-app-mode {
   font-weight: 600;
   color: #333;
 }
+
 .spec-box i {
   display: block;
   font-size: 20px;
@@ -492,13 +623,13 @@ body.map-app-mode {
   margin-bottom: 8px;
 }
 
-/* 설명글 */
 .description-section h3,
 .map-section h3 {
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 12px;
 }
+
 .description-section p {
   line-height: 1.6;
   color: #555;
@@ -506,7 +637,6 @@ body.map-app-mode {
   white-space: pre-line;
 }
 
-/* 액션 버튼들 */
 .action-buttons {
   margin-top: 10px;
 }
@@ -524,6 +654,7 @@ body.map-app-mode {
   margin-bottom: 12px;
   transition: 0.2s;
 }
+
 .btn-primary-full:hover {
   background: var(--hover-color);
   transform: translateY(-2px);
@@ -533,6 +664,7 @@ body.map-app-mode {
   display: flex;
   gap: 10px;
 }
+
 .btn-outline,
 .btn-danger {
   flex: 1;
@@ -542,19 +674,21 @@ body.map-app-mode {
   cursor: pointer;
   background: white;
 }
+
 .btn-outline {
   border: 1px solid #ccc;
   color: #333;
 }
+
 .btn-danger {
   border: 1px solid #ef4444;
   color: #ef4444;
 }
 
-/* 지도 (우측 하단) */
 .map-section {
   margin-top: 10px;
 }
+
 #detail-map {
   width: 100%;
   height: 250px;
@@ -562,7 +696,6 @@ body.map-app-mode {
   z-index: 1;
 }
 
-/* 📱 모바일 반응형 (768px 이하) Detail */
 @media screen and (max-width: 768px) {
   .detail-wrapper {
     flex-direction: column;
