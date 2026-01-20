@@ -1,7 +1,41 @@
+let allHouses = [];
+
 document.addEventListener("DOMContentLoaded", () => {
   checkLoginStatus();
+  setupSearchAndFilters();
   loadHouseData();
 });
+
+function setupSearchAndFilters(){
+  const searchInput = document.getElementById("searchInput");
+  const searchBtn = document.getElementById("searchBtn");
+
+  const locationSelect = document.getElementById("locationSelect");
+  const bedsSelect = document.getElementById("bedsSelect");
+  const bathsSelect = document.getElementById("bathsSelect");
+  const minPrice = document.getElementById("minPrice");
+  const maxPrice = document.getElementById("maxPrice");
+
+  if(!searchInput || !locationSelect) return;
+
+  searchInput.addEventListener("input", () => applyFilters());
+
+  searchBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    applyFilters();
+  });
+
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") applyFilters();
+  });
+
+  [locationSelect, bedsSelect, bathsSelect, minPrice, maxPrice].forEach((el) => {
+    el?.addEventListener("change", applyFilters);
+    el?.addEventListener("input", applyFilters); 
+  });
+}
+
+
 
 function checkLoginStatus() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -47,33 +81,76 @@ async function loadHouseData() {
     '<p style="padding:20px; text-align:center;">Loading homes...</p>';
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
-    let houses = [];
-    if (typeof db !== "undefined") {
-      houses = db.getAll();
-    }
+    allHouses = (typeof db !== "undefined") ? db.getAll() : [];
 
-    renderHouseList(houses);
-    initMap(houses);
+    renderHouseList(allHouses, { showEmptyMessage: false });
+    initMap(allHouses);
   } catch (error) {
     console.error(error);
     if (listSection) listSection.innerHTML = "<p>Error loading data.</p>";
   }
 }
 
+function applyFilters(){
+  const searchText = (document.getElementById("searchInput")?.value || "").trim().toLowerCase();
+  const location = document.getElementById("locationSelect")?.value || "";
+
+  const bedsVal = document.getElementById("bedsSelect")?.value || "";
+  const bathsVal = document.getElementById("bathsSelect")?.value || "";
+
+  const min = Number(document.getElementById("minPrice")?.value);
+  const max = Number(document.getElementById("maxPrice")?.value);
+
+  const bedsMin = bedsVal === "4" ? 4 : Number(bedsVal);   
+  const bathsMin = bathsVal === "3" ? 3 : Number(bathsVal); 
+
+  const filtered = allHouses.filter((h) => {
+
+    if(searchText){
+      const title = (h.title || "").toLowerCase();
+      if(!title.includes(searchText)) return false;
+    }
+    
+    if(location && h.location !== location) return false;
+
+    const price = Number(h.price);
+    if(Number.isFinite(min)&& price < min) return false;
+    if(Number.isFinite(max)&& price > max) return false;
+
+    const beds = Number(h.beds);
+    if (bedsVal) {
+      if (!Number.isFinite(beds) || beds < bedsMin) return false;
+    }
+
+    const baths = Number(h.baths);
+    if (bathsVal) {
+      if (!Number.isFinite(baths) || baths < bathsMin) return false;
+    }
+
+    return true;
+
+  });
+console.log("applyFilters::", location);
+  renderHouseList(filtered);
+  initMap(filtered);
+
+}
+
 function renderHouseList(items) {
+
   const listSection = document.querySelector(".list-section");
   if (!listSection) return;
 
   listSection.innerHTML = "";
 
   if (items.length === 0) {
+
     listSection.innerHTML =
       '<p style="text-align:center; padding:20px; color:#888;">No homes found.</p>';
     return;
   }
-
   items.forEach((house) => {
     const isBookmarked = bookmarkManager.has(house.id);
     const activeClass = isBookmarked ? "active" : "";
@@ -123,20 +200,34 @@ function toggleCardBookmark(event, id) {
   }
 }
 
+let mainMap = null;
+let markerLayer = null;
+
+
 function initMap(houses) {
+
   const mapContainer = document.getElementById("map");
   if (!mapContainer) return;
 
-  var map = L.map("map").setView([49.2827, -123.1207], 13);
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: "© OpenStreetMap",
-  }).addTo(map);
+  if (!mainMap) {
+    mainMap = L.map(mapContainer).setView([49.2827, -123.1207], 13);
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "© OpenStreetMap",
+    }).addTo(mainMap);
+
+    markerLayer = L.layerGroup().addTo(mainMap);
+    setTimeout(() => mainMap.invalidateSize(), 0);
+
+  }
+
+  markerLayer.clearLayers();
 
   houses.forEach((house) => {
     if (house.lat && house.lng) {
       L.marker([house.lat, house.lng])
-        .addTo(map)
+        .addTo(markerLayer)
         .bindPopup(`<b>${house.title}</b><br>$${house.price}`);
     }
   });

@@ -20,9 +20,15 @@
       <div class="logo">
         <i class="fa-solid fa-house"></i> <span>CozyCA</span>
       </div>
+<!-- ddddeeeeebbbbbuuuuuggggggggggg -->
+      <button onclick="localStorage.clear(); location.reload();">
+      Reset Btn for DEV
+      </button>
+
+
       <div class="search-bar">
-        <input type="text" placeholder="search" />
-        <button><i class="fa-solid fa-magnifying-glass"></i></button>
+        <input id="searchInput" type="text" placeholder="search by title" />
+        <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
       </div>
       <div class="user-menu">
         <button class="btn-login">login</button>
@@ -32,28 +38,26 @@
     <nav class="filter-bar">
       <div class="filter-item">
         <i class="fa-solid fa-location-dot"></i>
-        <select>
+        <select id="locationSelect">
           <option value="">location</option>
-          <option value="Vancouver">Vancouver</option>
-          <option value="Burnaby">Burnaby</option>
-          <option value="Richmond">Richmond</option>
-          <option value="Coquitlam">Coquitlam</option>
-          <option value="Surrey">Surrey</option>
+          <option value="Downtown Vancouver">Downtown Vancouver</option>
+          <option value="Kitsilano">Kitsilano</option>
+          <option value="Strathcona">Strathcona</option>
+          <option value="Mount Pleasant">Mount Pleasant</option> 
         </select>
       </div>
 
       <div class="filter-item price-range">
         <span>$</span>
-        <input type="number" placeholder="Min" class="input-price" />
+        <input id="minPrice" type="number" placeholder="Min" class="input-price" />
         <span>~</span>
-        <input type="number" placeholder="Max" class="input-price" />
+        <input id="maxPrice" type="number" placeholder="Max" class="input-price" />
       </div>
 
       <div class="filter-item">
         <i class="fa-solid fa-bed"></i>
-        <select>
+        <select id="bedsSelect">
           <option value="">Beds</option>
-          <option value="Studio">Studio</option>
           <option value="1">1 Bed</option>
           <option value="2">2 Beds</option>
           <option value="3">3 Beds</option>
@@ -63,7 +67,7 @@
 
       <div class="filter-item">
         <i class="fa-solid fa-bath"></i>
-        <select>
+        <select id="bathsSelect">
           <option value="">Bath</option>
           <option value="1">1 Bath</option>
           <option value="2">2 Baths</option>
@@ -75,84 +79,11 @@
     <main class="main-container">
       <section id="map" class="map-section"></section>
 
-      <section class="list-section">
-        <div class="card">
-          <div
-            class="card-img"
-            style="
-              background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
-            "
-          ></div>
-          <div class="card-info">
-            <p class="price">$2,800 <span class="period">/ Month</span></p>
-            <h3>Downtown Luxury Condo View</h3>
-
-            <p class="specs">1 Bed • 1 Bath • Furnished</p>
-            <p class="location">
-              <i class="fa-solid fa-map-pin"></i> Vancouver Downtown
-            </p>
-          </div>
-        </div>
-
-        <div class="card">
-          <div
-            class="card-img"
-            style="
-              background-image: url('https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
-            "
-          ></div>
-          <div class="card-info">
-            <p class="price">$950 <span class="period">/ Month</span></p>
-            <h3>Metrotown Station Room</h3>
-            <p class="specs">Private Room • Shared Bath</p>
-            <p class="location"><i class="fa-solid fa-map-pin"></i> Burnaby</p>
-          </div>
-        </div>
-
-        <div class="card">
-          <div
-            class="card-img"
-            style="
-              background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
-            "
-          ></div>
-          <div class="card-info">
-            <p class="price">$3,500 <span class="period">/ Month</span></p>
-            <h3>Coquitlam Townhouse</h3>
-
-            <p class="specs">3 Bed • 2 Bath • Parking</p>
-            <p class="location">
-              <i class="fa-solid fa-map-pin"></i> Coquitlam Centre
-            </p>
-          </div>
-        </div>
-        <div class="card">
-          <div
-            class="card-img"
-            style="
-              background-image: url('https://images.unsplash.com/photo-1484154218962-a1c002085d2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
-            "
-          ></div>
-          <div class="card-info">
-            <p class="price">$1,200 <span class="period">/ Month</span></p>
-            <h3>UBC Campus Room</h3>
-
-            <p class="specs">Shared Room • Study ready</p>
-            <p class="location">
-              <i class="fa-solid fa-map-pin"></i> UBC, Vancouver
-            </p>
-          </div>
-        </div>
-      </section>
+      <section class="list-section"></section>
     </main>
-    <script src="js/main.js"></script>
-    <script src="js/auth.js"></script>
-
-    <script>
-      var map = L.map("map").setView([49.2827, -123.1207], 13);
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-      }).addTo(map);
-    </script>
+    <script src="js/db.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+   
   </body>
 </html>
