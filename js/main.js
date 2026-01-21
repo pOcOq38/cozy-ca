@@ -1,9 +1,12 @@
 let allHouses = [];
 
 document.addEventListener("DOMContentLoaded", () => {
+  enforceSessionOrRedirect();
   checkLoginStatus();
+  mountSessionTimerUI();
   setupSearchAndFilters();
   loadHouseData();
+  setupProfileDropdown();
 });
 
 function setupSearchAndFilters(){
@@ -38,40 +41,27 @@ function setupSearchAndFilters(){
 
 
 function checkLoginStatus() {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const userMenuContainer = document.querySelector(".user-menu");
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const btnSignIn = document.getElementById("btnSignIn");
+  const userControls = document.getElementById("userControls");
+  const profileName = document.getElementById("profileName");
 
-  if (!userMenuContainer) return;
+  if (!btnSignIn || !userControls) return;
 
-  if (currentUser) {
-    userMenuContainer.innerHTML = `
-          <button class="btn-icon-nav" onclick="alert('Bookmark page coming soon!')" title="My Bookmarks">
-              <i class="fa-regular fa-bookmark"></i>
-          </button>
-          <div class="user-profile">
-              <i class="fa-solid fa-circle-user"></i>
-              <span>${currentUser.name}</span>
-          </div>
-          <button class="btn-logout" id="btn-logout-action" title="Log out">
-              <i class="fa-solid fa-arrow-right-from-bracket"></i>
-          </button>
-      `;
+  if (!user) {
+    btnSignIn.style.display = "inline-flex";
+    userControls.style.display = "none";
 
-    const btnLogout = document.getElementById("btn-logout-action");
-    if (btnLogout) {
-      btnLogout.addEventListener("click", () => {
-        if (confirm("Are you sure you want to log out?")) {
-          localStorage.removeItem("currentUser");
-          window.location.href = "index.html";
-        }
-      });
-    }
-  } else {
-    userMenuContainer.innerHTML = `
-          <button class="btn-login" onclick="window.location.href='login.html'">Log in</button>
-      `;
+    btnSignIn.onclick = () => (window.location.href = "login.html");
+    return;
   }
+
+  btnSignIn.style.display = "none";
+  userControls.style.display = "flex";
+
+  if (profileName) profileName.textContent = user.fname || user.name || "User";
 }
+
 
 async function loadHouseData() {
   const listSection = document.querySelector(".list-section");
@@ -132,7 +122,6 @@ function applyFilters(){
     return true;
 
   });
-console.log("applyFilters::", location);
   renderHouseList(filtered);
   initMap(filtered);
 
@@ -187,6 +176,14 @@ function renderHouseList(items) {
 
 function toggleCardBookmark(event, id) {
   event.stopPropagation();
+
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  if (!user?.email) {
+    alert("Please log in to use bookmarks.");
+    window.location.href = "login.html";
+    return;
+  }
+
   const isActive = bookmarkManager.toggle(id);
   const btn = event.currentTarget;
   const icon = btn.querySelector("i");
@@ -199,6 +196,7 @@ function toggleCardBookmark(event, id) {
     icon.classList.replace("fa-solid", "fa-regular");
   }
 }
+
 
 let mainMap = null;
 let markerLayer = null;
@@ -232,3 +230,72 @@ function initMap(houses) {
     }
   });
 }
+function setupProfileDropdown() {
+  const dropdown = document.getElementById("profileDropdown");
+  const trigger = document.getElementById("profileTrigger");
+  const menu = document.getElementById("profileMenu");
+  const btnEdit = document.getElementById("btnProfileEdit");
+  const btnLogout = document.getElementById("btnLogout");
+  const btnMyFlats = document.getElementById("btnMyFlats");
+
+  if (!dropdown || !trigger || !menu) return;
+
+  const isOpen = () => dropdown.classList.contains("open");
+
+  const close = () => {
+    dropdown.classList.remove("open");
+    menu.style.display = "none";
+    trigger.setAttribute("aria-expanded", "false");
+  };
+
+  const open = () => {
+    dropdown.classList.add("open");
+    menu.style.display = "block";
+    trigger.setAttribute("aria-expanded", "true");
+  };
+
+  trigger.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isOpen()) close();
+    else open();
+  });
+
+  dropdown.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
+  document.addEventListener(
+    "click",
+    (e) => {
+      if (!dropdown.contains(e.target)) close();
+    },
+    true
+  );
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+
+btnMyFlats?.addEventListener("click", ()=>{
+  close();
+  window.location.href = "my-flats.html";
+});
+
+  btnEdit?.addEventListener("click", () => {
+    close();
+    window.location.href = "profile.html";
+  });
+
+  btnLogout?.addEventListener("click", () => {
+    close();
+    if (confirm("Are you sure you want to log out?")) {
+      localStorage.removeItem("currentUser");
+      window.location.href = "index.html";
+    }
+  });
+}
+
+document.getElementById("btnBookmark")?.addEventListener("click", () => {
+  window.location.href = "bookmarks.html";
+});

@@ -24,8 +24,17 @@
 
         <form id="signupForm">
           <div class="input-group">
-            <label>Full Name</label>
-            <input type="text" id="name" placeholder="John Doe" required />
+            <label>First Name</label>
+            <input type="text" id="fname" placeholder="John" minlength="2" required />
+          </div>
+          <div class="input-group">
+            <label>Last Name</label>
+            <input type="text" id="lname" placeholder="Doe"  minlength="2" required />
+          </div>
+          <div class="input-group">
+            <label>Birth Date</label>
+            <input type="date" id="bDate" required />
+            <div id="bDateError" class="error-text"></div>
           </div>
           <div class="input-group">
             <label>Email</label>
@@ -44,6 +53,7 @@
               placeholder="Create a password"
               required
             />
+            <div id="pwError" class="error-text"></div>
           </div>
 
           <button type="submit" class="btn-full">Sign Up</button>

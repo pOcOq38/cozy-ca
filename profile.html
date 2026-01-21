@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - CozyCA</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="bg-gray">
+    <div class="auth-container">
+      <div class="auth-header">
+        <a href="index.html" class="auth-logo">
+          <i class="fa-solid fa-house"></i> CozyCA
+        </a>
+      </div>
+
+      <div class="auth-card" style="text-align:left;">
+        <h1 class="auth-title">Edit Profile</h1>
+        <p class="auth-subtitle">Update your account info.</p>
+
+        <form id="profileForm">
+          <div class="input-group">
+            <label>First Name</label>
+            <input type="text" id="fname" minlength="2" required />
+          </div>
+
+          <div class="input-group">
+            <label>Last Name</label>
+            <input type="text" id="lname" minlength="2" required />
+          </div>
+
+          <div class="input-group">
+            <label>Birth Date</label>
+            <input type="date" id="bdate" readonly />
+          </div>
+
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="email" readonly />
+          </div>
+
+
+          <button type="submit" class="btn-full">Save</button>
+          <button type="button" id="btnBack" class="btn-full" style="background:#111;">Back</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="js/profile.js"></script>
+  </body>
+</html>

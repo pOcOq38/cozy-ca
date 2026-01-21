@@ -86,22 +86,44 @@ const db = {
 };
 
 const bookmarkManager = {
-  getAll: () => {
-    return JSON.parse(localStorage.getItem("bookmarks")) || [];
+  _key: () => {
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    const email = user?.email;
+    return email ? `bookmarks_${email}` : null;
   },
+
+  getAll: () => {
+    const key = bookmarkManager._key();
+    if (!key) return [];
+    return JSON.parse(localStorage.getItem(key)) || [];
+  },
+
   has: (id) => {
     const list = bookmarkManager.getAll();
     return list.includes(Number(id));
   },
+
   toggle: (id) => {
-    let list = bookmarkManager.getAll();
+    const key = bookmarkManager._key();
+    if (!key) return false;
+
+    let list = JSON.parse(localStorage.getItem(key)) || [];
     const numericId = Number(id);
+
     if (list.includes(numericId)) {
       list = list.filter((item) => item !== numericId);
     } else {
       list.push(numericId);
     }
-    localStorage.setItem("bookmarks", JSON.stringify(list));
+
+    localStorage.setItem(key, JSON.stringify(list));
     return list.includes(numericId);
   },
+
+  clear: () => {
+    const key = bookmarkManager._key();
+    if (!key) return;
+    localStorage.removeItem(key);
+  },
 };
+

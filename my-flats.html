@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Flats - CozyCA</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="logo">
+        <i class="fa-solid fa-house"></i> <span>CozyCA</span>
+      </div>
+
+      <div class="user-menu" style="margin-left:auto; gap:10px;">
+        <button class="btn-login" id="btnAdd">Add Flat</button>
+        <button class="btn-login" style="background:#111;" id="btnBack">home</button>
+      </div>
+    </header>
+
+    <main class="main-container" style="display:block; overflow:auto;">
+      <section class="list-section" id="myList" style="width:100%; height:auto;"></section>
+    </main>
+
+    <script src="js/db.js"></script>
+    <script src="js/my-flats.js"></script>
+  </body>
+</html>
