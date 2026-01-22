@@ -78,6 +78,22 @@ const db = {
     data.push(item);
     localStorage.setItem(DB_NAME, JSON.stringify(data));
   },
+  update: (id, patch) => {
+    const data = db.getAll();
+    const idx = data.findIndex((item) => item.id == id);
+    if (idx === -1) return null;
+  
+    const updated = {
+      ...data[idx],
+      ...patch,
+      id: data[idx].id,
+      updatedAt: Date.now(),
+    };
+  
+    data[idx] = updated;
+    localStorage.setItem(DB_NAME, JSON.stringify(data));
+    return updated;
+  },
   delete: (id) => {
     const data = db.getAll();
     const filtered = data.filter((item) => item.id != id);

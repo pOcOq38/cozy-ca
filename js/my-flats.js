@@ -29,9 +29,6 @@ function getCurrentUser() {
       window.location.href = "flat-form.html";
     });
   
-    document.getElementById("btnBack").addEventListener("click", () => {
-      window.location.href = "index.html";
-    });
   
     const listEl = document.getElementById("myList");
     const all = db.getAll() || [];
@@ -51,7 +48,7 @@ function getCurrentUser() {
       card.style.height = "170px";
   
       card.innerHTML = `
-        <div class="card-img" style="background-image:url('${flat.image || "https://via.placeholder.com/300"}');"></div>
+        <div class="card-img" style="background-image:url('${flat.image || "images/placeholder.png"}');"></div>
         <div class="card-info">
           <p class="price">$${flat.rentPrice ?? flat.price} <span class="period">/ Month</span></p>
           <h3>${flat.title || `${flat.streetNumber} ${flat.streetName}`}</h3>

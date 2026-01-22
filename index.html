@@ -17,14 +17,15 @@
   </head>
   <body>
     <header class="header">
+      <a href="index.html" style="text-decoration: none;">
       <div class="logo">
         <i class="fa-solid fa-house"></i> <span>CozyCA</span>
       </div>
-<!-- ddddeeeeebbbbbuuuuuggggggggggg -->
-      <button onclick="localStorage.clear(); location.reload();">
-      Reset Btn for DEV
-      </button>
+    </a>
 
+      <!-- <button onclick="localStorage.clear(); location.reload();">
+      Reset Btn for DEV
+      </button> -->
 
       <div class="search-bar">
         <input id="searchInput" type="text" placeholder="search by title" />
@@ -64,9 +65,6 @@
           <div class="session-box" id="sessionBox"></div>
         </div>
       </div>
-      
-      
-
     </header>
 
     <nav class="filter-bar">
@@ -115,6 +113,29 @@
 
       <section class="list-section"></section>
     </main>
+
+    <div class="modal-backdrop" id="reauthModal" style="display:none;">
+      <div class="modal-card">
+        <div class="modal-head">
+          <h3 class="modal-title">Confirm Password</h3>
+          <button class="modal-x" id="reauthClose" type="button">×</button>
+        </div>
+    
+        <p class="modal-sub">For security, please confirm your password to continue.</p>
+    
+        <div class="input-group" style="margin-top:14px;">
+          <input type="password" id="reauthPw" placeholder="Enter your password" />
+          <div class="error-text" id="reauthError" style="margin-top:8px;"></div>
+        </div>
+    
+        <div class="modal-actions">
+          <button class="btn-login" style="background: var(--border);" id="reauthCancel" type="button">Cancel</button>
+          <button class="btn-login" id="reauthConfirm" type="button">Confirm</button>
+        </div>
+      </div>
+    </div>
+    
+
     <script src="js/db.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/main.js"></script>

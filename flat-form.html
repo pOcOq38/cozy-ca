@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flat - CozyCA</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   </head>
-  <body class="bg-gray">
+  <body class="bg-gray form-page">
     <div class="auth-container" style="max-width:720px;">
       <div class="auth-header">
         <a href="index.html" class="auth-logo">
@@ -21,77 +25,86 @@
         <p class="auth-subtitle">Fill in details and pick location on map.</p>
 
         <form id="flatForm">
-          <div class="input-group">
-            <label>City</label>
-            <input id="city" required />
-          </div>
+            <div class="input-group">
+                <label>Title</label>
+                <input id="title" required />
+              </div>
 
-          <div class="input-group">
-            <label>Street Name</label>
-            <input id="streetName" required />
-          </div>
+            <div class="input-group">
+                <label>City</label>
+                <input id="city" required />
+            </div>
 
-          <div class="input-group">
-            <label>Street Number</label>
-            <input id="streetNumber" type="number" required />
-          </div>
+            <div class="input-group">
+                <label>Street Name</label>
+                <input id="streetName" required />
+            </div>
 
-          <div class="input-group">
-            <label>Area Size</label>
-            <input id="areaSize" type="number" required />
-          </div>
+            <div class="input-group">
+                <label>Street Number</label>
+                <input id="streetNumber" type="number" required />
+            </div>
+            <div class="input-group">
+                <label>Beds</label>
+                <input id="beds" type="number" required />
+            </div>
+            
+            <div class="input-group">
+                <label>Baths</label>
+                <input id="baths" type="number" required />
+            </div>
+            
+            <div class="input-group">
+                <label>Has AC</label>
+                <select id="hasAC">
+                    <option value="false">No</option>
+                    <option value="true">Yes</option>
+                </select>
+            </div>
 
-          <div class="input-group">
-            <label>Has AC</label>
-            <select id="hasAC">
-              <option value="false">No</option>
-              <option value="true">Yes</option>
-            </select>
-          </div>
+            <div class="input-group">
+                <label>Year Built</label>
+                <input id="yearBuilt" type="number" required />
+            </div>
 
-          <div class="input-group">
-            <label>Year Built</label>
-            <input id="yearBuilt" type="number" required />
-          </div>
+            <div class="input-group">
+                <label>Rent Price</label>
+                <input id="rentPrice" type="number" required />
+            </div>
 
-          <div class="input-group">
-            <label>Rent Price</label>
-            <input id="rentPrice" type="number" required />
-          </div>
+            <div class="input-group">
+                <label>Date Available</label>
+                <input id="dateAvailable" type="date" required />
+            </div>
 
-          <div class="input-group">
-            <label>Date Available</label>
-            <input id="dateAvailable" type="date" required />
-          </div>
+            <div class="input-group">
+                <label>Image URL (optional)</label>
+                <input id="image" placeholder="https://..." />
+            </div>
 
-          <div class="input-group">
-            <label>Image URL (optional)</label>
-            <input id="image" placeholder="https://..." />
-          </div>
+            <div class="input-group">
+                <label>Description (optional)</label>
+                <input id="desc" placeholder="Short description..." />
+            </div>
 
-          <div class="input-group">
-            <label>Description (optional)</label>
-            <input id="desc" placeholder="Short description..." />
-          </div>
+            <div class="input-group">
+                <label>Pick location on map (click to set)</label>
+                <div id="flatMap" style="height:280px; border-radius:12px;"></div>
+            </div>
 
-          <div class="input-group">
-            <label>Pick location on map (click to set)</label>
-            <div id="flatMap" style="height:280px; border-radius:12px;"></div>
-          </div>
+            <div class="input-group">
+                <label>Latitude</label>
+                <input id="lat" readonly />
+            </div>
 
-          <div class="input-group">
-            <label>Latitude</label>
-            <input id="lat" readonly />
-          </div>
+            <div class="input-group">
+                <label>Longitude</label>
+                <input id="lng" readonly />
+            </div>
 
-          <div class="input-group">
-            <label>Longitude</label>
-            <input id="lng" readonly />
-          </div>
-
-          <button type="submit" class="btn-full" id="btnSave">Save</button>
-          <button type="button" class="btn-full" style="background:#111;" id="btnBack">Back</button>
-          <button type="button" class="btn-full" style="background:#dc2626; display:none;" id="btnDelete">Delete</button>
+            <button type="submit" class="btn-full" id="btnSave">Save</button>
+            <button type="button" class="btn-full" style="background:#111;" id="btnBack">Back</button>
+            <button type="button" class="btn-full" style="background:#dc2626; display:none;" id="btnDelete">Delete</button>
         </form>
       </div>
     </div>

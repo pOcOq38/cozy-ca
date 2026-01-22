@@ -37,10 +37,13 @@ function getCurrentUser() {
     const btnBack = document.getElementById("btnBack");
     const form = document.getElementById("flatForm");
   
+    const title = document.getElementById("title");
     const city = document.getElementById("city");
     const streetName = document.getElementById("streetName");
     const streetNumber = document.getElementById("streetNumber");
-    const areaSize = document.getElementById("areaSize");
+    const beds = document.getElementById("beds");
+    const baths = document.getElementById("baths");
+
     const hasAC = document.getElementById("hasAC");
     const yearBuilt = document.getElementById("yearBuilt");
     const rentPrice = document.getElementById("rentPrice");
@@ -51,6 +54,7 @@ function getCurrentUser() {
     const lng = document.getElementById("lng");
   
     let existing = null;
+    
   
     if (editing) {
       pageTitle.textContent = "Edit Flat";
@@ -68,10 +72,12 @@ function getCurrentUser() {
         return;
       }
   
+      title.value = existing.title || "";
       city.value = existing.city || "";
       streetName.value = existing.streetName || "";
       streetNumber.value = existing.streetNumber ?? "";
-      areaSize.value = existing.areaSize ?? "";
+      beds.value = existing.beds ?? "";
+      baths.value = existing.baths ?? "";
       hasAC.value = String(Boolean(existing.hasAC));
       yearBuilt.value = existing.yearBuilt ?? "";
       rentPrice.value = existing.rentPrice ?? existing.price ?? "";
@@ -131,7 +137,6 @@ function getCurrentUser() {
         city: city.value.trim(),
         streetName: streetName.value.trim(),
         streetNumber: Number(streetNumber.value),
-        areaSize: Number(areaSize.value),
         hasAC: hasAC.value === "true",
         yearBuilt: Number(yearBuilt.value),
         rentPrice: Number(rentPrice.value),
@@ -142,7 +147,7 @@ function getCurrentUser() {
         lat: Number(lat.value),
         lng: Number(lng.value),
         ownerEmail: user.email,
-        title: `${streetNumber.value} ${streetName.value}, ${city.value}`,
+        title: title.value.trim(),
         location: city.value.trim(),
         beds: existing?.beds ?? 1,
         baths: existing?.baths ?? 1,

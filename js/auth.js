@@ -233,3 +233,106 @@ function enforceSessionOrRedirect() {
   }
 }
 
+function requirePasswordConfirm(next, opts = {}) {
+  const maxAgeMs = opts.maxAgeMs ?? 5 * 60 * 1000;
+
+  const user = getCurrentUser?.() || (() => {
+    try { return JSON.parse(localStorage.getItem("currentUser")); } catch { return null; }
+  })();
+
+  if (!user?.email) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const last = Number(localStorage.getItem("reauthAt"));
+  if (Number.isFinite(last) && Date.now() - last < maxAgeMs) {
+    next();
+    return;
+  }
+
+  const modal = document.getElementById("reauthModal");
+  const pwInput = document.getElementById("reauthPw");
+  const errEl = document.getElementById("reauthError");
+  const btnConfirm = document.getElementById("reauthConfirm");
+  const btnCancel = document.getElementById("reauthCancel");
+  const btnClose = document.getElementById("reauthClose");
+
+  if (!modal || !pwInput || !errEl || !btnConfirm || !btnCancel || !btnClose) {
+    alert("Re-auth modal not found. Please add modal HTML to index.html.");
+    return;
+  }
+
+  const open = () => {
+    errEl.textContent = "";
+    pwInput.value = "";
+    modal.style.display = "flex";
+    setTimeout(() => pwInput.focus(), 0);
+    document.body.style.overflow = "hidden";
+  };
+
+  const close = () => {
+    modal.style.display = "none";
+    document.body.style.overflow = "";
+  };
+
+  const validate = () => {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const me = users.find((u) => u.email === user.email);
+
+    if (!me) {
+      errEl.textContent = "User record not found.";
+      return false;
+    }
+
+    const pw = pwInput.value;
+    if (!pw) {
+      errEl.textContent = "Please enter your password.";
+      pwInput.classList.add("invalid");
+      pwInput.classList.remove("valid");
+      return false;
+    }
+
+    if (pw !== me.password) {
+      errEl.textContent = "Wrong password.";
+      pwInput.classList.add("invalid");
+      pwInput.classList.remove("valid");
+      return false;
+    }
+
+    pwInput.classList.remove("invalid");
+    pwInput.classList.add("valid");
+    errEl.textContent = "";
+    return true;
+  };
+
+  const onConfirm = () => {
+    if (!validate()) return;
+    localStorage.setItem("reauthAt", String(Date.now()));
+    close();
+    next();
+  };
+
+  const onCancel = () => close();
+
+  const onBackdrop = (e) => {
+    if (e.target === modal) close();
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === "Escape") close();
+    if (e.key === "Enter") onConfirm();
+  };
+
+  btnConfirm.onclick = onConfirm;
+  btnCancel.onclick = onCancel;
+  btnClose.onclick = onCancel;
+  modal.onclick = onBackdrop;
+  pwInput.oninput = () => {
+    if (pwInput.classList.contains("invalid")) validate();
+  };
+
+  document.addEventListener("keydown", onKeyDown, { once: true });
+
+  open();
+}

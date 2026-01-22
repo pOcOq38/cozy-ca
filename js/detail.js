@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("d-desc").innerText =
     house.desc || "No description provided.";
   document.getElementById("d-image").src =
-    house.image || "https://via.placeholder.com/800x400";
+    house.image || "images/placeholder.png";
   document.getElementById("d-beds").innerText = `${house.beds || 1} Bed`;
   document.getElementById("d-baths").innerText = `${house.baths || 1} Bath`;
 

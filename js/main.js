@@ -9,7 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
   setupProfileDropdown();
 });
 
-function setupSearchAndFilters(){
+
+function setupSearchAndFilters() {
   const searchInput = document.getElementById("searchInput");
   const searchBtn = document.getElementById("searchBtn");
 
@@ -19,22 +20,32 @@ function setupSearchAndFilters(){
   const minPrice = document.getElementById("minPrice");
   const maxPrice = document.getElementById("maxPrice");
 
-  if(!searchInput || !locationSelect) return;
+  if (!searchInput) return;
 
-  searchInput.addEventListener("input", () => applyFilters());
+  const run = () => applyFilters();
 
-  searchBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    applyFilters();
-  });
+  searchInput.addEventListener("input", run);
+
+  if (searchBtn) {
+    searchBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      run();
+    });
+  }
 
   searchInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") applyFilters();
+    if (e.key === "Enter") run();
   });
 
-  [locationSelect, bedsSelect, bathsSelect, minPrice, maxPrice].forEach((el) => {
-    el?.addEventListener("change", applyFilters);
-    el?.addEventListener("input", applyFilters); 
+  [locationSelect, bedsSelect, bathsSelect].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("change", run);
+  });
+
+  [minPrice, maxPrice].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("input", run);
+    el.addEventListener("change", run);
   });
 }
 
@@ -83,49 +94,70 @@ async function loadHouseData() {
   }
 }
 
-function applyFilters(){
-  const searchText = (document.getElementById("searchInput")?.value || "").trim().toLowerCase();
-  const location = document.getElementById("locationSelect")?.value || "";
+function matchWord(title, keyword){
+  if(!keyword) return true;
+  const normalized = String(title || "").toLowerCase();
+  const words = normalized.split(/[\s,-]+/);
+  return words.some((w) => w.startsWith(keyword));
+}
 
+function applyFilters() {
+  const location = document.getElementById("locationSelect")?.value || "";
   const bedsVal = document.getElementById("bedsSelect")?.value || "";
   const bathsVal = document.getElementById("bathsSelect")?.value || "";
 
-  const min = Number(document.getElementById("minPrice")?.value);
-  const max = Number(document.getElementById("maxPrice")?.value);
-
-  const bedsMin = bedsVal === "4" ? 4 : Number(bedsVal);   
-  const bathsMin = bathsVal === "3" ? 3 : Number(bathsVal); 
+  const minStr = document.getElementById("minPrice")?.value || "";
+  const maxStr = document.getElementById("maxPrice")?.value || "";
+  const min = minStr === "" ? null : Number(minStr);
+  const max = maxStr === "" ? null : Number(maxStr);
 
   const filtered = allHouses.filter((h) => {
-
-    if(searchText){
-      const title = (h.title || "").toLowerCase();
-      if(!title.includes(searchText)) return false;
+    if (location) {
+      const a = String(h.location || "").trim().toLowerCase();
+      const b = String(location).trim().toLowerCase();
+      if (a !== b) return false;
     }
-    
-    if(location && h.location !== location) return false;
 
-    const price = Number(h.price);
-    if(Number.isFinite(min)&& price < min) return false;
-    if(Number.isFinite(max)&& price > max) return false;
-
-    const beds = Number(h.beds);
+    const price = Number(String(h.price).replace(/[^0-9.]/g, ""));
+    if (min !== null && Number.isFinite(min) && price < min) return false;
+    if (max !== null && Number.isFinite(max) && price > max) return false;
     if (bedsVal) {
-      if (!Number.isFinite(beds) || beds < bedsMin) return false;
+      const beds = Number(h.beds);
+      if (!Number.isFinite(beds)) return false;
+
+      if (bedsVal === "4+") {
+        if (beds < 4) return false;
+      } else {
+        const targetBeds = Number(bedsVal);
+        if (beds !== targetBeds) return false;
+      }
     }
 
-    const baths = Number(h.baths);
     if (bathsVal) {
-      if (!Number.isFinite(baths) || baths < bathsMin) return false;
+      const baths = Number(h.baths);
+      if (!Number.isFinite(baths)) return false;
+
+      if (bathsVal === "3+") {
+        if (baths < 3) return false;
+      } else {
+        const targetBaths = Number(bathsVal);
+        if (baths !== targetBaths) return false;
+      }
     }
 
     return true;
-
   });
-  renderHouseList(filtered);
-  initMap(filtered);
 
+  const anyFilterUsed =
+    Boolean(location) ||
+    Boolean(bedsVal) ||
+    Boolean(bathsVal) ||
+    minStr !== "" ||
+    maxStr !== "";
+
+  renderHouseList(filtered, { showEmptyMessage: anyFilterUsed });
 }
+
 
 function renderHouseList(items) {
 
@@ -154,7 +186,7 @@ function renderHouseList(items) {
                   <i class="${iconClass} fa-bookmark"></i>
               </button>
               <div class="card-img" style="background-image: url('${
-                house.image || "https://via.placeholder.com/300"
+                house.image || "images/placeholder.png"
               }');"></div>
               <div class="card-info">
                   <p class="price">$${
@@ -277,15 +309,20 @@ function setupProfileDropdown() {
     if (e.key === "Escape") close();
   });
 
-btnMyFlats?.addEventListener("click", ()=>{
-  close();
-  window.location.href = "my-flats.html";
-});
-
   btnEdit?.addEventListener("click", () => {
     close();
-    window.location.href = "profile.html";
+    requirePasswordConfirm(() => {
+      window.location.href = "profile.html";
+    });
   });
+  
+  btnMyFlats?.addEventListener("click", () => {
+    close();
+    requirePasswordConfirm(() => {
+      window.location.href = "my-flats.html";
+    });
+  });
+  
 
   btnLogout?.addEventListener("click", () => {
     close();
