@@ -32,7 +32,6 @@ function getCurrentUser() {
     const bdateEl = document.getElementById("bdate");
     const btnBack = document.getElementById("btnBack");
   
-console.log("user.bdate :: ", user.bdate);
 
     emailEl.value = user.email || "";
     fnameEl.value = user.fname || "";
